@@ -99,7 +99,7 @@ class BaseReconModel(nn.Module):
         v3 = vs[:, face_id[:, 2], :]
         e1 = v1 - v2
         e2 = v2 - v3
-        face_norm = e1.cross(e2)
+        face_norm = e1.cross(e2, dim=-1)
         empty = torch.zeros((face_norm.size(0), 1, 3),
                             dtype=face_norm.dtype, device=face_norm.device)
         face_norm = torch.cat((face_norm, empty), 1)
