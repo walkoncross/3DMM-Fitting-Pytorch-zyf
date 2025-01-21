@@ -146,7 +146,7 @@ def fit(args):
         vs = pred_dict['vs'].cpu().numpy().squeeze()
         tri = pred_dict['tri'].cpu().numpy().squeeze()
         color = pred_dict['color'].cpu().numpy().squeeze()
-        utils.save_obj(out_obj_path, vs, tri+1, color)
+        utils.save_obj(out_obj_path, vs, tri+1, color / 255.0)
 
         print('composed image is saved at %s' % args.res_folder)
 
