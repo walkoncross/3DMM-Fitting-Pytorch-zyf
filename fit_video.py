@@ -1,4 +1,4 @@
-from facenet_pytorch import MTCNN
+# from facenet_pytorch import MTCNN
 from core.options import VideoFittingOptions
 from PIL import Image
 import cv2
@@ -274,7 +274,7 @@ def fit_shape(args, device):
 
 
 def process_video(args, device):
-    mtcnn = MTCNN(device=device, select_largest=False)
+    # mtcnn = MTCNN(device=device, select_largest=False)
 
     fa = face_alignment.FaceAlignment(
         face_alignment.LandmarksType._3D, flip_input=True, device=device)
@@ -289,12 +289,13 @@ def process_video(args, device):
         print('error reading the video file %s' % args.v_path)
         return
     orig_h, orig_w = frame.shape[:2]
-    bboxes, probs = mtcnn.detect(frame)
+    # bboxes, probs = mtcnn.detect(frame)
+    bboxes = fa.face_detector.detect_from_image(frame)
 
     if bboxes is None:
         print('no face detected')
     else:
-        bbox = utils.pad_bbox(bboxes[0], (orig_w, orig_h), args.padding_ratio)
+        bbox = utils.pad_bbox(bboxes[0][:4], (orig_w, orig_h), args.padding_ratio)
         face_w = bbox[2] - bbox[0]
         face_h = bbox[3] - bbox[1]
         assert face_w == face_h

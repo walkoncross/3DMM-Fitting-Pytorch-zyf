@@ -1,4 +1,4 @@
-from facenet_pytorch import MTCNN
+# from facenet_pytorch import MTCNN
 from core.options import ImageFittingOptions
 import cv2
 import face_alignment
@@ -14,7 +14,7 @@ import core.losses as losses
 def fit(args):
     # init face detection and lms detection models
     print('loading models')
-    mtcnn = MTCNN(device=args.device, select_largest=False)
+    # mtcnn = MTCNN(device=args.device, select_largest=False)
     fa = face_alignment.FaceAlignment(
         face_alignment.LandmarksType._3D, flip_input=False)
     recon_model = get_recon_model(model=args.recon_model,
@@ -29,12 +29,13 @@ def fit(args):
     print('image is loaded. width: %d, height: %d' % (orig_w, orig_h))
 
     # detect the face using MTCNN
-    bboxes, probs = mtcnn.detect(img_arr)
+    # bboxes, probs = mtcnn.detect(img_arr)
+    bboxes = fa.face_detector.detect_from_image(img_arr)
 
     if bboxes is None:
         print('no face detected')
     else:
-        bbox = utils.pad_bbox(bboxes[0], (orig_w, orig_h), args.padding_ratio)
+        bbox = utils.pad_bbox(bboxes[0][:4], (orig_w, orig_h), args.padding_ratio)
         face_w = bbox[2] - bbox[0]
         face_h = bbox[3] - bbox[1]
         assert face_w == face_h
